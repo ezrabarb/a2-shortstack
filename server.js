@@ -1,74 +1,63 @@
-const http = require( 'http' ),
-      fs   = require( 'fs' ),
-      // IMPORTANT: you must run `npm install` in the directory for this assignment
-      // to install the mime library if you're testing this on your local machine.
-      // However, Glitch will install it automatically by looking in your package.json
-      // file.
-      mime = require( 'mime' ),
-      dir  = 'public/',
-      port = 3000
+const express = require('express');
+const path = require('path');
+const app = express();
+const port = 3000;
 
 const appdata = [
-  { 'model': 'toyota', 'year': 1999, 'mpg': 23 },
-  { 'model': 'honda', 'year': 2004, 'mpg': 30 },
-  { 'model': 'ford', 'year': 1987, 'mpg': 14} 
-]
+  { 'showName': 'Breaking Bad', 'directorName': 'Vince Gilligan', 'comments': 'An incredible journey of transformation and moral dilemmas.', 'rating': '5', 'status': 'excellent' },
+  { 'showName': 'Law and Order: SVU', 'directorName': 'Dick Wolf', 'comments': 'A compelling procedural that tackles tough issues.', 'rating': '4', 'status': 'good' },
+  { 'showName': 'Avatar: The Last Airbender', 'directorName': 'Michael Dante DiMartino', 'comments': 'A excellent story but its ending was anticlimactic', 'rating': '2', 'status': 'bad' }
+];
 
-const server = http.createServer( function( request,response ) {
-  if( request.method === 'GET' ) {
-    handleGet( request, response )    
-  }else if( request.method === 'POST' ){
-    handlePost( request, response ) 
+// Serve static files from the React app
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Middleware to parse JSON request bodies
+app.use(express.json());
+
+// GET route to serve the React app
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+// API route to get shows data
+app.get('/shows', (req, res) => {
+  res.json(appdata);
+});
+
+// POST route to add a new show
+app.post('/addShow', (req, res) => {
+  const newShow = req.body;
+  appdata.push(newShow);
+  res.status(200).json({ message: 'Show added successfully', newShow });
+});
+
+// POST route to delete a show
+app.post('/delShow', (req, res) => {
+  const showName = req.body.showName;
+  const index = appdata.findIndex(show => show.showName === showName);
+  if (index !== -1) {
+    appdata.splice(index, 1);
+    res.status(200).json({ message: 'Show deleted successfully' });
+  } else {
+    res.status(404).json({ message: 'Show not found' });
   }
-})
+});
 
-const handleGet = function( request, response ) {
-  const filename = dir + request.url.slice( 1 ) 
-
-  if( request.url === '/' ) {
-    sendFile( response, 'public/index.html' )
-  }else{
-    sendFile( response, filename )
+// POST route to edit a show's rating and status
+app.post('/editShow', (req, res) => {
+  const { showName, rating } = req.body;
+  const show = appdata.find(b => b.showName === showName);
+  if (show) {
+    show.rating = rating;
+    show.status = (rating === '1' || rating === '2') ? 'bad' : 'good';
+    res.status(200).json({ message: 'Show updated successfully', show });
+  } else {
+    res.status(404).json({ message: 'Show not found' });
   }
-}
+});
 
-const handlePost = function( request, response ) {
-  let dataString = ''
-
-  request.on( 'data', function( data ) {
-      dataString += data 
-  })
-
-  request.on( 'end', function() {
-    console.log( JSON.parse( dataString ) )
-
-    // ... do something with the data here!!!
-
-    response.writeHead( 200, "OK", {'Content-Type': 'text/plain' })
-    response.end('test')
-  })
-}
-
-const sendFile = function( response, filename ) {
-   const type = mime.getType( filename ) 
-
-   fs.readFile( filename, function( err, content ) {
-
-     // if the error = null, then we've loaded the file successfully
-     if( err === null ) {
-
-       // status code: https://httpstatuses.com
-       response.writeHeader( 200, { 'Content-Type': type })
-       response.end( content )
-
-     }else{
-
-       // file not found, error code 404
-       response.writeHeader( 404 )
-       response.end( '404 Error: File Not Found' )
-
-     }
-   })
-}
-
-server.listen( process.env.PORT || port )
+// Start the server
+app.listen(port, () => {
+  console.log(`Server is running on http://localhost:${port}`);
+});

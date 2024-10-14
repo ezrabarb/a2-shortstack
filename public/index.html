@@ -1,18 +1,101 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <title>CS4241 Assignment 2</title>
+    <title>Show Tracker</title>
     <meta charset="utf-8">
-    <script src="js/main.js"></script>
-    <link rel="stylesheet" href="css/main.css">
-    
-    <!-- get rid of favicon error -->
-    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+    <link rel="stylesheet" href="css/style.css">
   </head>
-  <body>
-    <form>
-      <input type="text" id="yourname" value="your name here">
-      <button>submit</button>
+  <body class="content">
+    <h1 class="table-label" id="big-title">
+      Show Tracker
+    </h1>
+    <img src ="https://www.514blog.ca/wp-content/uploads/2020/03/1_dBJMknulIZSAC36tTmanVA.jpeg" width= "300" title="top shows">
+    <!-- Show Submission Form -->
+    <form action="/addShow" method= "post">
+      <fieldset>
+        <legend>
+          Have Any Shows You Want To Watch?
+        </legend>
+        Show Name: <br>
+        <input type="text" id="showName"><br>
+        Director: <br>
+        <input type="text" id="directorName"><br>
+        Comments: <br>
+        <input type="text" id="comments"><br>
+        Rating (1-5): <br>
+        <input type="text" id="rating"><br>
+      <div id="submit-btn">
+        <button>Add My Show</button>
+      </div>
+      </fieldset>
     </form>
+    <!-- The three tables -->
+    
+    <div id="table-view">
+          <h1 class="center-txt table-label">Full Show List</h1>
+          <div style="height:150px; overflow-y: auto;">
+            <table class="table is-fullwidth">
+              <thead>
+                <tr><th>Name</th><th>Director</th><th>Comments</th><th>Rating</th></tr>
+              </thead>    
+              <tbody id="all-shows">
+              </tbody>
+            </table>
+          </div>
+
+          <h1 class="center-txt table-label">Shows You Liked</h1>
+          <div style="height:150px; overflow-y: auto;">
+            <table class="table is-fullwidth">
+              <thead>
+                <tr><th>Name</th><th>Director</th><th>Comments</th><th>Rating</th></tr>
+              </thead>    
+              <tbody id="good-shows">
+              </tbody>
+            </table>
+          </div>
+
+          <h1 class="center-txt table-label">Shows You Didn't Like</h1>
+          <div style="height:150px; overflow-y: auto;">
+            <table class="table is-fullwidth">
+              <thead>
+                <tr><th>Name</th><th>Director</th><th>Comments</th><th>Rating</th></tr>
+              </thead>    
+              <tbody id="bad-shows">
+              </tbody>
+            </table>
+          </div>
+        </div>
+    <!-- End of table area -->
+    <!-- Show Submission Form -->
+    <form action="/delShow" method= "post">
+      <fieldset>
+        <legend>
+          Oops, Made A Mistake?
+        </legend>
+        Update Show: <br>
+        <div id="wrapper">
+          <div id="left-edit">
+            Name of Show:
+            <input type="text" id="editShowName">
+          </div>
+          <div id="right-edit">
+            New Rating:
+            <input type="text" id="editShowRating">
+          </div>
+        </div>
+        <br>
+        <div id="edit-btn">
+          <button>Update Show</button>
+        </div>
+        
+        <br>Show Name to Delete: <br>
+        <input type="text" id="delShowName"><br>
+      <div id="del-btn">
+        <button>Delete Show</button>
+      </div>
+      </fieldset>
+    </form>
+    <br>
   </body>
+  <script src="./js/scripts.js"></script>
 </html>
