@@ -9,13 +9,11 @@ const appdata = [
   { 'showName': 'Avatar: The Last Airbender', 'directorName': 'Michael Dante DiMartino', 'comments': 'A excellent story but its ending was anticlimactic', 'rating': '2', 'status': 'bad' }
 ];
 
-// Serve static files from the React app
+// Serve static files
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Middleware to parse JSON request bodies
 app.use(express.json());
 
-// GET route to serve the React app
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });

@@ -1,7 +1,7 @@
 html, body {
   height: 100%;
   margin: 0;
-  font-family: 'Roboto', sans-serif; /* Use a cleaner, modern font */
+  font-family: 'Roboto', sans-serif; 
 }
 
 body {
@@ -10,7 +10,7 @@ body {
 
 #big-title {
   font-size: 40px;
-  font-family: 'Orbitron', monospace; /* A futuristic monospace font */
+  font-family: 'Orbitron', monospace; 
   font-weight: bold;
   color: #FFFAE3;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
@@ -21,7 +21,7 @@ body {
 .content {
   max-width: 1000px;
   margin: 40px auto;
-  background: rgba(130, 212, 206, 0.9); /* Add transparency for a modern effect */
+  background: rgba(130, 212, 206, 0.9); /* Add transparency */
   border-radius: 12px;
   padding: 20px;
   text-align: center;
